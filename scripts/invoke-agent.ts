@@ -86,7 +86,9 @@ async function invokeAgent(prompt: string): Promise<void> {
 }
 
 // ── エントリーポイント ────────────────────────────────────────────────────
-const prompt = process.argv[2] ?? "東京の現在時刻を教えてください。また、123 × 456 を計算してください。";
+const prompt =
+  process.argv[2] ??
+  "東京の現在時刻を教えてください。また、123 × 456 を計算してください。";
 
 invokeAgent(prompt).catch((error: unknown) => {
   console.error("Error:", error);

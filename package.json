@@ -7,7 +7,10 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "invoke-agent": "tsx scripts/invoke-agent.ts"
+    "invoke-agent": "tsx scripts/invoke-agent.ts",
+    "format": "biome format --write .",
+    "lint": "biome lint .",
+    "check": "biome check --write ."
   },
   "dependencies": {
     "@ai-sdk/amazon-bedrock": "^3.0.0",
@@ -20,6 +23,7 @@
     "zod": "^3.0.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.4",
     "@types/express": "^5.0.0",
     "@types/node": "^22.0.0",
     "tsx": "^4.0.0",

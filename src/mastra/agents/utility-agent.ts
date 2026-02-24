@@ -1,4 +1,5 @@
-import { Agent, createTool } from "@mastra/core";
+import { Agent } from "@mastra/core/agent";
+import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { bedrock, MODELS } from "../bedrock.js";
 
@@ -11,14 +12,16 @@ const getCurrentTimeTool = createTool({
     timezone: z
       .string()
       .default("UTC")
-      .describe('IANAタイムゾーン識別子 (例: "Asia/Tokyo", "America/New_York")'),
+      .describe(
+        'IANAタイムゾーン識別子 (例: "Asia/Tokyo", "America/New_York")',
+      ),
   }),
   outputSchema: z.object({
     timezone: z.string(),
     currentTime: z.string(),
     isoString: z.string(),
   }),
-  execute: async ({ context }) => {
+  execute: async (context) => {
     const { timezone } = context;
     const now = new Date();
     const formatter = new Intl.DateTimeFormat("ja-JP", {
@@ -48,7 +51,9 @@ const calculateTool = createTool({
     b: z.number().describe("2つ目の数値"),
     operation: z
       .enum(["add", "subtract", "multiply", "divide"])
-      .describe("実行する演算: add(加算), subtract(減算), multiply(乗算), divide(除算)"),
+      .describe(
+        "実行する演算: add(加算), subtract(減算), multiply(乗算), divide(除算)",
+      ),
   }),
   outputSchema: z.object({
     a: z.number(),
@@ -57,7 +62,7 @@ const calculateTool = createTool({
     result: z.number(),
     expression: z.string(),
   }),
-  execute: async ({ context }) => {
+  execute: async (context) => {
     const { a, b, operation } = context;
     const operatorMap = {
       add: "+",
@@ -102,14 +107,17 @@ const generateRandomNumberTool = createTool({
   description: "指定した範囲内の乱数を生成する。",
   inputSchema: z.object({
     min: z.number().default(0).describe("最小値 (inclusive, デフォルト: 0)"),
-    max: z.number().default(100).describe("最大値 (inclusive, デフォルト: 100)"),
+    max: z
+      .number()
+      .default(100)
+      .describe("最大値 (inclusive, デフォルト: 100)"),
   }),
   outputSchema: z.object({
     min: z.number(),
     max: z.number(),
     result: z.number(),
   }),
-  execute: async ({ context }) => {
+  execute: async (context) => {
     const { min, max } = context;
     if (min > max) {
       throw new Error(`min (${min}) は max (${max}) 以下でなければなりません`);
@@ -121,6 +129,7 @@ const generateRandomNumberTool = createTool({
 
 // ── エージェント定義 ──────────────────────────────────────────────────────
 export const utilityAgent = new Agent({
+  id: "utilityAgent",
   name: "utilityAgent",
   instructions: `あなたは便利な多目的アシスタントです。以下のツールを使用してユーザーのリクエストに応えてください。
 

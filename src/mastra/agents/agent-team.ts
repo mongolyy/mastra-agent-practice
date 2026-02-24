@@ -1,4 +1,5 @@
-import { Agent, createTool } from "@mastra/core";
+import { Agent } from "@mastra/core/agent";
+import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { bedrock, MODELS } from "../bedrock.js";
 
@@ -8,6 +9,7 @@ const MODEL = MODELS.haikuJP;
 
 // ── 専門エージェント 1: 開発担当 ─────────────────────────────────────────
 export const devAgent = new Agent({
+  id: "devAgent",
   name: "devAgent",
   instructions: `あなたは経験豊富なソフトウェア開発者です。実装の観点から問題を分析してください。
 
@@ -24,6 +26,7 @@ export const devAgent = new Agent({
 
 // ── 専門エージェント 2: 技術アーキテクチャ担当 ───────────────────────────
 export const architectAgent = new Agent({
+  id: "architectAgent",
   name: "architectAgent",
   instructions: `あなたはシニアテクニカルアーキテクトです。システム設計の観点から問題を分析してください。
 
@@ -41,6 +44,7 @@ export const architectAgent = new Agent({
 
 // ── 専門エージェント 3: デバッグ担当 ─────────────────────────────────────
 export const debugAgent = new Agent({
+  id: "debugAgent",
   name: "debugAgent",
   instructions: `あなたは熟練したデバッグエンジニアです。問題の根本原因と潜在的な障害を特定してください。
 
@@ -58,6 +62,7 @@ export const debugAgent = new Agent({
 
 // ── 専門エージェント 4: 悪魔の代弁者 ────────────────────────────────────
 export const devilAdvocateAgent = new Agent({
+  id: "devilAdvocateAgent",
   name: "devilAdvocateAgent",
   instructions: `あなたは批判的思考の専門家として「悪魔の代弁者」を演じます。提案や設計に対して建設的に反論してください。
 
@@ -87,15 +92,19 @@ const consultTeamTool = createTool({
     debugger: z.string().describe("デバッグ担当の回答"),
     devilAdvocate: z.string().describe("悪魔の代弁者の回答"),
   }),
-  execute: async ({ context }) => {
-    console.log(`[Team] 4エージェントに並行相談中: "${context.question.slice(0, 60)}..."`);
+  execute: async (context) => {
+    console.log(
+      `[Team] 4エージェントに並行相談中: "${context.question.slice(0, 60)}..."`,
+    );
 
-    const [devResult, archResult, debugResult, devilResult] = await Promise.all([
-      devAgent.generate(context.question),
-      architectAgent.generate(context.question),
-      debugAgent.generate(context.question),
-      devilAdvocateAgent.generate(context.question),
-    ]);
+    const [devResult, archResult, debugResult, devilResult] = await Promise.all(
+      [
+        devAgent.generate(context.question),
+        architectAgent.generate(context.question),
+        debugAgent.generate(context.question),
+        devilAdvocateAgent.generate(context.question),
+      ],
+    );
 
     console.log("[Team] 全エージェントの回答収集完了");
 
@@ -110,6 +119,7 @@ const consultTeamTool = createTool({
 
 // ── コーディネーターエージェント ──────────────────────────────────────────
 export const coordinatorAgent = new Agent({
+  id: "coordinatorAgent",
   name: "coordinatorAgent",
   instructions: `あなたはエージェントチームのコーディネーターです。
 ユーザーの質問・課題に対して、4人の専門家チームに相談し、多角的な分析を提供します。

@@ -9,7 +9,7 @@ const baseConfig = { region: process.env["AWS_REGION"] ?? "ap-northeast-1" };
 export const bedrock = createAmazonBedrock(
   awsProfile
     ? { ...baseConfig, credentialProvider: fromSSO({ profile: awsProfile }) }
-    : baseConfig
+    : baseConfig,
 );
 
 // ap-northeast-1 で利用可能な推論プロファイル
