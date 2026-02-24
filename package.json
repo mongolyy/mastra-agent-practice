@@ -1,0 +1,28 @@
+{
+  "name": "mastra-agent-practice",
+  "version": "1.0.0",
+  "description": "Mastra + AWS Bedrock AgentCore Runtime integration practice",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "invoke-agent": "tsx scripts/invoke-agent.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/amazon-bedrock": "^3.0.0",
+    "@aws-sdk/client-bedrock-agentcore": "^3.0.0",
+    "@aws-sdk/client-ssm": "^3.0.0",
+    "@aws-sdk/credential-providers": "^3.992.0",
+    "@mastra/core": "^0.24.0",
+    "dotenv": "^16.0.0",
+    "express": "^5.0.0",
+    "zod": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}
