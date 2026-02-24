@@ -7,10 +7,8 @@
       "env": {}
     },
     "aws-knowledge-mcp-server": {
-      "type": "stdio",
-      "command": "uvx",
-      "args": ["fastmcp", "run", "https://knowledge-mcp.global.api.aws"],
-      "env": {}
+      "type": "http",
+      "url": "https://knowledge-mcp.global.api.aws"
     },
     "context7": {
       "type": "stdio",
